@@ -49,14 +49,28 @@ searchForm.addEventListener('submit', (event) => {
             }
             
             galleryList.innerHTML = data.hits.map(image => {
-                const imageLink = `
-                    <a href="${image.largeImageURL}" data-lightbox="gallery" data-title="${image.tags} | Likes: ${image.likes} | Views: ${image.views} | Comments: ${image.comments} | Downloads: ${image.downloads}">
-                        <img src="${image.webformatURL}" alt="${image.tags}">
-                    </a>`;
+                // const imageLink = `
+                //     <a href="${image.largeImageURL}" data-lightbox="gallery" data-title="${image.tags} | Likes: ${image.likes} | Views: ${image.views} | Comments: ${image.comments} | Downloads: ${image.downloads}">
+                //         <img src="${image.webformatURL}" alt="${image.tags}">
+                //     </a>`;
                 
-                const listItem = `<li class="gallery-item">${imageLink}</li>`;
+                // const listItem = `<li class="gallery-item">${imageLink}</li>`;
 
-                return listItem;
+                // return listItem;
+                const imageElement = `
+        
+          <li class="gallery-item">
+            <a href="${image.largeImageURL}" data-lightbox="gallery" data-title="${image.tags}">
+                <img class="img-item" src="${image.webformatURL}" alt="${image.tags}">
+            </a>
+            <ul class="image-properties">
+                <li>Likes <br/>${image.likes}</li>
+                <li>Views <br/>${image.views}</li>
+                <li>Comments <br/>${image.comments}</li>
+                <li>Downloads <br/>${image.downloads}</li>
+            </ul>
+          </li>`;
+    return imageElement;
             }).join('');
 
             const lightbox = new SimpleLightbox('.gallery a');
