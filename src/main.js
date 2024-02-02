@@ -11,6 +11,8 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 const searchForm = document.querySelector('.search-form')
 const searchInput = document.querySelector('.search-input')
 const galleryList = document.querySelector('.gallery-list')
+const loader = document.querySelector('.loader')
+
 
 searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -25,7 +27,10 @@ searchForm.addEventListener('submit', (event) => {
         });
         return;
     }
-
+    
+    // Показати індикатор завантаження
+    loader.style.display = 'block';
+    
     galleryList.innerHTML = '';
 
     const apiKey = '36996517-56800863ae540be6945d0f4f2';
@@ -48,35 +53,41 @@ searchForm.addEventListener('submit', (event) => {
                 return;
             }
             
+            
+        setTimeout(() => {
             galleryList.innerHTML = data.hits.map(image => {
-                // const imageLink = `
-                //     <a href="${image.largeImageURL}" data-lightbox="gallery" data-title="${image.tags} | Likes: ${image.likes} | Views: ${image.views} | Comments: ${image.comments} | Downloads: ${image.downloads}">
-                //         <img src="${image.webformatURL}" alt="${image.tags}">
-                //     </a>`;
-                
-                // const listItem = `<li class="gallery-item">${imageLink}</li>`;
-
-                // return listItem;
-                const imageElement = `
-        
-          <li class="gallery-item">
-            <a href="${image.largeImageURL}" data-lightbox="gallery" data-title="${image.tags}">
+                const imageElement = 
+                `<li class="gallery-item">
+                <a href="${image.largeImageURL}" data-lightbox="gallery" data-title="${image.tags}">
                 <img class="img-item" src="${image.webformatURL}" alt="${image.tags}">
-            </a>
-            <ul class="image-properties">
+                </a>
+                <ul class="image-properties">
                 <li>Likes <br/>${image.likes}</li>
                 <li>Views <br/>${image.views}</li>
                 <li>Comments <br/>${image.comments}</li>
                 <li>Downloads <br/>${image.downloads}</li>
-            </ul>
-          </li>`;
-    return imageElement;
+                </ul>
+                </li>`;
+                return imageElement;
             }).join('');
 
-            const lightbox = new SimpleLightbox('.gallery a');
+        
+        searchInput.value = '';
+
+        // Приховати індикатор завантаження після отримання відповіді
+        loader.style.display = 'none';
+
+        const lightbox = new SimpleLightbox('.gallery a');
+            lightbox.refresh();
+        }, 2000); // Зробила затримку відображення зображень на 2 секунди
         })
+
+
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
+
+            // Приховати індикатор завантаження якщо помилка
+        loader.style.display = 'none';
         });
 });
 
