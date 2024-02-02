@@ -45,11 +45,16 @@ searchForm.addEventListener('submit', (event) => {
         })
         .then(data => {
             if (data.hits.length === 0) {
+
+                // Приховати індикатор завантаження якщо помилка
+            loader.style.display = 'none';
+            
                 iziToast.error({
                     message: 'Sorry, there are no images matching your search query. Please try again!',
                     position: 'topRight',
                     timeout: 3000,
                 });
+                
                 return;
             }
             
@@ -86,8 +91,10 @@ searchForm.addEventListener('submit', (event) => {
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
 
+            searchInput.value = '';
+
             // Приховати індикатор завантаження якщо помилка
-        loader.style.display = 'none';
+            loader.style.display = 'none';
         });
 });
 
