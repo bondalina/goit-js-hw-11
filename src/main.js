@@ -13,6 +13,7 @@ const searchInput = document.querySelector('.search-input')
 const galleryList = document.querySelector('.gallery-list')
 const loader = document.querySelector('.loader')
 
+const lightbox = new SimpleLightbox('.gallery a');
 
 searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -82,15 +83,19 @@ searchForm.addEventListener('submit', (event) => {
         // Приховати індикатор завантаження після отримання відповіді
         loader.style.display = 'none';
 
-        const lightbox = new SimpleLightbox('.gallery a');
+        
             lightbox.refresh();
         }, 2000); // Зробила затримку відображення зображень на 2 секунди
         })
 
 
         .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-
+            iziToast.error({
+                message: 'There has been a problem with your fetch operation!',
+                position: 'topRight',
+                timeout: 3000,
+            });
+            
             searchInput.value = '';
 
             // Приховати індикатор завантаження якщо помилка
